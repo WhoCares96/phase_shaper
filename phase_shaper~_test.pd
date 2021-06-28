@@ -1,4 +1,4 @@
-#N canvas 488 213 1920 1104 12;
+#N canvas 507 301 1920 1104 12;
 #X obj 313 106 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
 #X obj 314 139 t b b;
@@ -7,8 +7,8 @@
 #X obj 346 194 readsf~;
 #X obj 311 488 dac~;
 #X floatatom 658 347 8 0 0 0 - - -;
-#X obj 800 170 vsl 15 128 20 20000 1 0 empty empty empty 0 -9 0 10
--4032 -1 -1 3200 1;
+#X obj 803 164 vsl 15 128 20 20000 1 0 empty empty empty 0 -9 0 10
+-4032 -1 -1 2400 1;
 #X msg 587 285 freq \$1;
 #X msg 346 168 open audiofiles/cicerospeech.wav;
 #X obj 80 90 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
@@ -39,12 +39,14 @@
 1;
 #X obj 419 402 phase_shaper~;
 #X floatatom 621 59 5 1 30 0 - - -;
-#X floatatom 682 440 5 0 0 0 - - -;
+#X floatatom 682 440 6 0 0 0 - - -;
 #X obj 808 369 vsl 15 128 0.025 40 1 0 empty empty empty 0 -9 0 10
--4032 -1 -1 400 1;
+-4032 -1 -1 1700 1;
 #X msg 610 379 q \$1;
 #X msg 617 95 filtercount \$1;
 #X obj 85 154 metro 1000;
+#X msg 690 237 120;
+#X msg 741 395 0.0675;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
 #X connect 1 1 9 0;
@@ -56,6 +58,7 @@
 #X connect 8 0 32 0;
 #X connect 9 0 4 0;
 #X connect 10 0 38 0;
+#X connect 10 0 17 0;
 #X connect 11 0 12 0;
 #X connect 11 1 15 0;
 #X connect 12 0 14 0;
@@ -86,3 +89,5 @@
 #X connect 36 0 32 0;
 #X connect 37 0 32 0;
 #X connect 38 0 11 0;
+#X connect 39 0 6 0;
+#X connect 40 0 34 0;

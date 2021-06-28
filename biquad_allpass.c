@@ -1,7 +1,4 @@
-
-
 #include "biquad_allpass.h"
-#include <stdio.h>
 
 biquad_allpass *biquad_allpass_new(float f0, float Q, float nFilters){
     biquad_allpass *x = (biquad_allpass *) vas_mem_alloc(sizeof(biquad_allpass));
@@ -14,8 +11,6 @@ biquad_allpass *biquad_allpass_new(float f0, float Q, float nFilters){
     x->f0 = f0;
     x->Q = Q;
     x->gain = 1;
-
-    printf("Hello World\n");
 
     biquad_allpass_setFrequency(x, f0);
     return x;
@@ -75,26 +70,29 @@ void biquad_allpass_setFrequency(biquad_allpass *x, float f0){
 
 
 void biquad_allpass_process(biquad_allpass *x, float *in, float *out, int vectorSize){
-    int n = 0;
-    int i = 0;
+    float lastOut;
+    float lastLastOut;
+    float lastIn;
+    float lastLastIn;
 
-    //int nFilters = x->nFilters;
-    int nFilters = 50;
+    float currentIn;
+    float currentOut;
 
-    float *outStart = out;
+    int nFilters = x->nFilters;
+
+    lastOut = x->lastOut;
+    lastLastOut = x->lastLastOut;
+    lastIn = x->lastIn;
+    lastLastIn = x->lastLastIn;
+
+    //float* outStart = out;
+
+    for(int i=0; i<nFilters; i++){
 
 
-    while (i++ < nFilters){
 
-      float lastOut = x->lastOut;
-      float lastLastOut = x->lastLastOut;
-      float lastIn = x->lastIn;
-      float lastLastIn = x->lastLastIn;
-      float currentIn;
-      float currentOut;
-
-      while(n++ < vectorSize){
-            currentIn = *in++;
+      for(int n=0; n<vectorSize; n++){
+            currentIn = *(in+n);
 
             currentOut =    x->b0_over_a0 * currentIn
                           + x->b1_over_a0 * lastIn
@@ -102,19 +100,46 @@ void biquad_allpass_process(biquad_allpass *x, float *in, float *out, int vector
                           - x->a1_over_a0 * lastOut
                           - x->a2_over_a0 * lastLastOut;
 
-            *out++ = currentOut;
+            *(out+n) = currentOut;
 
             lastLastOut = lastOut;
             lastOut = currentOut;
             lastLastIn = lastIn;
             lastIn = currentIn;
       }
-      x->lastLastIn = lastLastIn;
-      x->lastIn = lastIn;
-      x->lastLastOut = lastLastOut;
-      x->lastOut = lastOut;
 
-      in = outStart;
-      out = outStart;
+
+/*
+for(int n=0; n<vectorSize; n++){
+    currentIn = *(in+n);
+    //currentIn = in[n];
+
+    currentOut =    x->b0_over_a0 * currentIn
+                  + x->b1_over_a0 * x->lastIn
+                  + x->b2_over_a0 * x->lastLastIn
+                  - x->a1_over_a0 * x->lastOut
+                  - x->a2_over_a0 * x->lastLastOut;
+
+    // order is important
+    x->lastOut = currentOut;
+    x->lastLastOut = x->lastOut;
+
+    x->lastIn = currentIn;
+    x->lastLastIn = x->lastIn;
+
+    *(out+n) = currentOut;
+    //out[n] = currentOut;
+}
+*/
+      in = out;
+      //out = outStart;
     }
+
+    x->lastLastIn = lastLastIn;
+    x->lastIn = lastIn;
+    x->lastLastOut = lastLastOut;
+    x->lastOut = lastOut;
+
+    in = in+vectorSize;
+    out = out+vectorSize;
 }

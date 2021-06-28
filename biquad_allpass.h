@@ -1,11 +1,9 @@
 /**
- * @file vas_highpass.h
+ * @file biquad_allpass.h
  * @author Thomas Resch
- * @date 4 Jan 2018
- * @brief Biquad Filter <br>
- * From Robert Bristow-Johnson's Webpage
- * http://www.musicdsp.org/files/Audio-EQ-Cookbook.txt
- *
+ * @adapted by Arne Kuhle
+ * @date 28 Jun 2021
+ * @brief Biquad Filter
  */
 
 
@@ -29,7 +27,6 @@ typedef struct vas_l{
     float lastLastIn;
     float Q;
     float bandwidth;
-    float shelfSlope;
     float A;
     float w0;
     float cosW0;
@@ -54,6 +51,8 @@ void biquad_allpass_setFrequency(biquad_allpass *x, float f0);
 void biquad_allpass_setQ(biquad_allpass *x, float Q);
 
 void biquad_allpass_setFilterCount(biquad_allpass *x, float nFilters);
+
+void biquad_allpass_perform_filter_operation(biquad_allpass *x, float *in, float *out, int vectorSize);
 
 void biquad_allpass_process(biquad_allpass *x, float *in, float *out, int vectorSize);
 
