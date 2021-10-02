@@ -1,20 +1,21 @@
 /**
  * Todo: Documentation
  */
-
 #include "m_pd.h"
 #include "biquad_allpass.h"
+#include "phase_shaper_meta.h"
+#include "vas_mem.h"
+
 
 static t_class *phase_shaper_tilde_class;
 
 /**
  * Todo: Documentation
  */
-typedef struct phase_shaper_tilde
-{
+typedef struct phase_shaper_tilde{
     t_object  x_obj;
     t_sample f;
-    biquad_allpass *allpass;
+    phase_shaper_meta *p_meta;
     t_outlet *x_out;
 } phase_shaper_tilde;
 
@@ -28,7 +29,7 @@ t_int *phase_shaper_tilde_perform(t_int *w)
     t_sample  *out =  (t_sample *)(w[3]);
     int n =  (int)(w[4]);
 
-    biquad_allpass_process(x->allpass, in, out, n);
+    phase_shaper_meta_process(x->p_meta, in, out, n);
 
     return (w+5);
 }
@@ -46,7 +47,7 @@ void phase_shaper_tilde_dsp(phase_shaper_tilde *x, t_signal **sp)
  */
 void phase_shaper_tilde_free(phase_shaper_tilde *x){
     outlet_free(x->x_out);
-    biquad_allpass_free(x->allpass);
+    phase_shaper_meta_free(x->p_meta);
 }
 
 /**
@@ -56,7 +57,7 @@ void *phase_shaper_tilde_new(t_floatarg f){
     phase_shaper_tilde *x = (phase_shaper_tilde *)pd_new(phase_shaper_tilde_class);
 
     x->x_out = outlet_new(&x->x_obj, &s_signal);
-    x->allpass = biquad_allpass_new(1000, 10, 1);
+    x->p_meta = phase_shaper_meta_new(1000, 10, 1);
 
     return (void *)x;
 }
@@ -65,21 +66,21 @@ void *phase_shaper_tilde_new(t_floatarg f){
  * Todo: Documentation
  */
 void phase_shaper_tilde_setFrequency(phase_shaper_tilde *x, float freq){
-    biquad_allpass_setFrequency(x->allpass, freq);
+    phase_shaper_meta_setFrequency(x->p_meta, freq);
 }
 
 /**
  * Todo: Documentation
  */
 void phase_shaper_tilde_setQ(phase_shaper_tilde *x, float q){
-    biquad_allpass_setQ(x->allpass, q);
+    phase_shaper_meta_setQ(x->p_meta, q);
 }
 
 /**
  * Todo: Documentation
  */
 void phase_shaper_tilde_setFilterCount(phase_shaper_tilde *x, float nFilters){
-    biquad_allpass_setFilterCount(x->allpass, nFilters);
+    phase_shaper_meta_setFilterCount(x->p_meta, nFilters);
 }
 
 /**
