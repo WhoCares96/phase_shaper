@@ -3,7 +3,7 @@
  * @author Thomas Resch
  * @adapted by Arne Kuhle
  * @date 28 Jun 2021
- * @brief Biquad Filter
+ * @Biquad Allpass Filter
  */
 
 // TODO unnätige variablen entfernen
@@ -13,7 +13,6 @@
 
 #include "math.h"
 #include <stddef.h>
-
 
 #ifdef __cplusplus
 extern "C" {
@@ -33,7 +32,7 @@ typedef struct biquad_allpass{
     float cosW0;
     float sinW0;
     float alpha;
-    float gain;
+    float mix;
     float a0, a1, a2, b0, b1, b2;
     float b0_over_a0;
     float b1_over_a0;
@@ -44,13 +43,15 @@ typedef struct biquad_allpass{
 
 } biquad_allpass;
 
-biquad_allpass *biquad_allpass_new(float f0, float Q);
+biquad_allpass *biquad_allpass_new(float f0, float Q, float mix);
 
 void biquad_allpass_free(biquad_allpass *x);
 
 void biquad_allpass_setFrequency(biquad_allpass *x, float f0);
 
 void biquad_allpass_setQ(biquad_allpass *x, float Q);
+
+void biquad_allpass_setMix(biquad_allpass *x, float mix);
 
 void biquad_allpass_updateParameters(biquad_allpass *x);
 

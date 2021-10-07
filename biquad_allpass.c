@@ -5,7 +5,7 @@
 #include "biquad_allpass.h"
 #include "vas_mem.h"
 
-biquad_allpass *biquad_allpass_new(float f0, float Q){
+biquad_allpass *biquad_allpass_new(float f0, float Q, float mix){
 
     biquad_allpass *x = (biquad_allpass *) vas_mem_alloc(sizeof(biquad_allpass));
 
@@ -17,7 +17,7 @@ biquad_allpass *biquad_allpass_new(float f0, float Q){
 
     x->f0 = f0;
     x->Q = Q;
-    x->gain = 1;
+    x->mix = mix;
 
     x->next = NULL;
 
@@ -32,16 +32,27 @@ void biquad_allpass_free(biquad_allpass *x){
 
 void biquad_allpass_setQ(biquad_allpass *x, float Q){
     x->Q = Q;
-    biquad_allpass_updateParameters(x);
+    //biquad_allpass_updateParameters(x);
 }
 
 void biquad_allpass_setFrequency(biquad_allpass *x, float f0){
     x->f0 = f0;
-    biquad_allpass_updateParameters(x);
+    //biquad_allpass_updateParameters(x);
 }
 
+
+void biquad_allpass_setMix(biquad_allpass *x, float mix){
+    //if (mix <= 1 && mix >=0) {
+        x->mix = mix;
+        //biquad_allpass_updateParameters(x);
+    //}
+}
+
+
 void biquad_allpass_updateParameters(biquad_allpass *x){
-    x->A = sqrtf(powf(x->gain/20, 10));
+
+    // biquad coefficients
+    ///////x->A = sqrtf(powf(x->gain/20, 10));
     x->w0 = 2*M_PI*x->f0/x->sampleRate;
     x->cosW0 = cosf(x->w0);
     x->sinW0 = sinf(x->w0);
@@ -78,20 +89,23 @@ void biquad_allpass_filter_audio(biquad_allpass *x, float *in, float *out, int v
     lastLastIn = x->lastLastIn;
 
     for(int n=0; n<vectorSize; n++){
-      currentIn = *(in+n);
+        currentIn = *(in+n);
 
-      currentOut =    x->b0_over_a0 * currentIn
-                    + x->b1_over_a0 * lastIn
-                    + x->b2_over_a0 * lastLastIn
-                    - x->a1_over_a0 * lastOut
-                    - x->a2_over_a0 * lastLastOut;
+        currentOut =   x->b0_over_a0 * currentIn
+                     + x->b1_over_a0 * lastIn
+                     + x->b2_over_a0 * lastLastIn
+                     - x->a1_over_a0 * lastOut
+                     - x->a2_over_a0 * lastLastOut;
 
-      *(out+n) = currentOut;
+        currentOut =  (1-x->mix) * currentIn
+                     +   x->mix  * currentOut;
 
-      lastLastOut = lastOut;
-      lastOut = currentOut;
-      lastLastIn = lastIn;
-      lastIn = currentIn;
+        *(out+n) = currentOut;
+
+        lastLastOut = lastOut;
+        lastOut = currentOut;
+        lastLastIn = lastIn;
+        lastIn = currentIn;
     }
 
     x->lastLastIn = lastLastIn;

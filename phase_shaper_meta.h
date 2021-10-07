@@ -20,18 +20,20 @@ typedef struct phase_shaper_meta{
     float sampleRate;
     float f0;
     float Q;
-    float gain;
+    float mix;
     struct biquad_allpass *allpass_head;
 
 } phase_shaper_meta;
 
-phase_shaper_meta *phase_shaper_meta_new(float f0, float Q, float nFilters);
+phase_shaper_meta *phase_shaper_meta_new(float f0, float Q, float nFilters, float mix);
 
 void phase_shaper_meta_free(phase_shaper_meta *x);
 
 void phase_shaper_meta_setFrequency(phase_shaper_meta *x, float f0);
 
 void phase_shaper_meta_setQ(phase_shaper_meta *x, float Q);
+
+void phase_shaper_meta_setMix(phase_shaper_meta *x, float mix);
 
 void phase_shaper_meta_setFilterCount(phase_shaper_meta *x, float nFilters);
 

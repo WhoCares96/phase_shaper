@@ -51,40 +51,61 @@ void phase_shaper_tilde_free(phase_shaper_tilde *x){
 }
 
 /**
- * Todo: Documentation
+ * @related phase_shaper_tilde
+ * @brief Creates a new phase_shaper_tilde object <br>
  */
-void *phase_shaper_tilde_new(t_floatarg f){
+void *phase_shaper_tilde_new(){
     phase_shaper_tilde *x = (phase_shaper_tilde *)pd_new(phase_shaper_tilde_class);
 
     x->x_out = outlet_new(&x->x_obj, &s_signal);
-    x->p_meta = phase_shaper_meta_new(1000, 10, 1);
+    x->p_meta = phase_shaper_meta_new(1000, 10, 1, 1);
 
     return (void *)x;
 }
 
 /**
- * Todo: Documentation
+ * @related phase_shaper_tilde
+ * @brief Sets the frequency adjustment parameter. <br>
+ * @param x A pointer to the phase_shaper_tilde object <br>
+ * @param frequency Sets the frequency parameter <br>
  */
 void phase_shaper_tilde_setFrequency(phase_shaper_tilde *x, float freq){
     phase_shaper_meta_setFrequency(x->p_meta, freq);
 }
 
 /**
- * Todo: Documentation
+ * @related phase_shaper_tilde
+ * @brief Sets the Q factor adjustment parameter. <br>
+ * @param x A pointer to the phase_shaper_tilde object <br>
+ * @param q Sets the q factor parameter <br>
  */
-void phase_shaper_tilde_setQ(phase_shaper_tilde *x, float q){
-    phase_shaper_meta_setQ(x->p_meta, q);
+void phase_shaper_tilde_setQ(phase_shaper_tilde *x, float Q){
+    phase_shaper_meta_setQ(x->p_meta, Q);
 }
 
 /**
- * Todo: Documentation
+ * @related phase_shaper_tilde
+ * @brief Sets the filter count parameter. <br>
+ * @param x A pointer to the phase_shaper_tilde object <br>
+ * @param nFilters Sets amount of Filters <br>
  */
 void phase_shaper_tilde_setFilterCount(phase_shaper_tilde *x, float nFilters){
     phase_shaper_meta_setFilterCount(x->p_meta, nFilters);
 }
 
 /**
- * Todo: Documentation
+ * @related phase_shaper_tilde
+ * @brief Sets the Dry-Wet Mix adjustment parameter. <br>
+ * @param x A pointer to the phase_shaper_tilde object <br>
+ * @param mix Sets the Dry-Wet Mix parameter <br>
+ */
+void phase_shaper_tilde_setMix(phase_shaper_tilde *x, float mix){
+    phase_shaper_meta_setMix(x->p_meta, mix);
+}
+
+/**
+ * @related phase_shaper_tilde
+ * @brief Setup for the phase_shaper_tilde class <br>
  */
 void phase_shaper_tilde_setup(void){
       phase_shaper_tilde_class = class_new(gensym("phase_shaper~"),
@@ -101,6 +122,8 @@ void phase_shaper_tilde_setup(void){
       class_addmethod(phase_shaper_tilde_class, (t_method)phase_shaper_tilde_setQ, gensym("q"), A_DEFFLOAT, 0);
 
       class_addmethod(phase_shaper_tilde_class, (t_method)phase_shaper_tilde_setFilterCount, gensym("filtercount"), A_DEFFLOAT, 0);
+
+      class_addmethod(phase_shaper_tilde_class, (t_method)phase_shaper_tilde_setMix, gensym("mix"), A_DEFFLOAT, 0);
 
       CLASS_MAINSIGNALIN(phase_shaper_tilde_class, phase_shaper_tilde, f);
 }

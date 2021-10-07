@@ -7,20 +7,21 @@
 #include "vas_mem.h"
 
 
-phase_shaper_meta *phase_shaper_meta_new(float f0, float Q, float nFilters){
+phase_shaper_meta *phase_shaper_meta_new(float f0, float Q, float nFilters, float mix){
 
     phase_shaper_meta *x = (phase_shaper_meta *) vas_mem_alloc(sizeof(phase_shaper_meta));
 
     x->sampleRate = 44100;
-    x->gain = 1;
+
 
     x->f0 = f0;
     x->Q = Q;
-    x->nFilters = 1;
+    x->mix = mix;
+    x->nFilters = nFilters;
 
-    x->allpass_head = biquad_allpass_new(f0, Q);
+    x->allpass_head = biquad_allpass_new(x->f0, x->Q, x->mix);
 
-    phase_shaper_meta_setFilterCount(x, nFilters);
+    phase_shaper_meta_setFilterCount(x, x->nFilters);
     phase_shaper_meta_updateAllpassInstances(x);
 
     return x;
@@ -41,38 +42,38 @@ void phase_shaper_meta_free(phase_shaper_meta *x){
 void phase_shaper_meta_setFilterCount(phase_shaper_meta *x, float nFilters){
 
     // cast filter count to int
-    nFilters = (int) nFilters ;
+    nFilters = (int) nFilters;
 
     while (x->nFilters < nFilters) {
 
-      biquad_allpass *current_allpass = x->allpass_head;
+        biquad_allpass *current_allpass = x->allpass_head;
 
-      // move to last element
-      while (current_allpass->next != NULL) {
-        current_allpass = current_allpass->next;
-      }
+        // move to last element
+        while (current_allpass->next != NULL) {
+          current_allpass = current_allpass->next;
+        }
 
-      // push new allpass
-      current_allpass->next = biquad_allpass_new(x->f0, x->Q);
+        // push new allpass
+        current_allpass->next = biquad_allpass_new(x->f0, x->Q, x->mix);
 
-      x->nFilters = x->nFilters + 1;
+        x->nFilters = x->nFilters + 1;
     }
 
 
     while (x->nFilters > nFilters) {
 
-      biquad_allpass *current_allpass = x->allpass_head;
+        biquad_allpass *current_allpass = x->allpass_head;
 
-      // move to second last element
-      while (current_allpass->next->next != NULL) {
-          current_allpass = current_allpass->next;
-      }
+        // move to second last element
+        while (current_allpass->next->next != NULL) {
+            current_allpass = current_allpass->next;
+        }
 
-      // pop last allpass
-      biquad_allpass_free(current_allpass->next);
-      current_allpass->next = NULL;
+        // pop last allpass
+        biquad_allpass_free(current_allpass->next);
+        current_allpass->next = NULL;
 
-      x->nFilters = x->nFilters - 1;
+        x->nFilters = x->nFilters - 1;
     }
 
 }
@@ -80,14 +81,17 @@ void phase_shaper_meta_setFilterCount(phase_shaper_meta *x, float nFilters){
 
 void phase_shaper_meta_updateAllpassInstances(phase_shaper_meta *x){
 
-  biquad_allpass * current_allpass = x->allpass_head;
+    biquad_allpass * current_allpass = x->allpass_head;
 
-  while (current_allpass != NULL) {
+    while (current_allpass != NULL) {
 
-    biquad_allpass_setFrequency(current_allpass, x->f0);
-    biquad_allpass_setQ(current_allpass, x->Q);
+        biquad_allpass_setFrequency(current_allpass, x->f0);
+        biquad_allpass_setQ(current_allpass, x->Q);
+        biquad_allpass_setMix(current_allpass, x->mix);
 
-      current_allpass = current_allpass->next;
+        biquad_allpass_updateParameters(current_allpass);
+
+        current_allpass = current_allpass->next;
   }
 }
 
@@ -104,16 +108,22 @@ void phase_shaper_meta_setFrequency(phase_shaper_meta *x, float f0){
 }
 
 
+void phase_shaper_meta_setMix(phase_shaper_meta *x, float mix){
+    x->mix = mix;
+    phase_shaper_meta_updateAllpassInstances(x);
+}
+
+
 void phase_shaper_meta_process(phase_shaper_meta *x, float *in, float *out, int vectorSize){
 
-  biquad_allpass *current_allpass = x->allpass_head;
+    biquad_allpass *current_allpass = x->allpass_head;
 
-  while (current_allpass != NULL) {
+    while (current_allpass != NULL) {
 
-    biquad_allpass_filter_audio(current_allpass, in, out, vectorSize);
+        biquad_allpass_filter_audio(current_allpass, in, out, vectorSize);
 
-    in = out;
+        in = out;
 
-    current_allpass = current_allpass->next;
-  }
+        current_allpass = current_allpass->next;
+    }
 }
