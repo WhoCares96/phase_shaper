@@ -1,25 +1,20 @@
-/*
- * TODO: Credits, Dokumentation, semikolon, formatierung, error fangen (z.b. nFilters muss >=1)
- */
-
 #include "phase_shaper_meta.h"
 #include "biquad_allpass.h"
 #include "vas_mem.h"
-
+#include "m_pd.h"
 
 phase_shaper_meta *phase_shaper_meta_new(float f0, float Q, float nFilters, float mix){
 
     phase_shaper_meta *x = (phase_shaper_meta *) vas_mem_alloc(sizeof(phase_shaper_meta));
 
-    x->sampleRate = 44100;
-
+    x->sampleRate = sys_getsr();
 
     x->f0 = f0;
     x->Q = Q;
     x->mix = mix;
     x->nFilters = nFilters;
 
-    x->allpass_head = biquad_allpass_new(x->f0, x->Q, x->mix);
+    x->allpass_head = biquad_allpass_new(x->f0, x->Q, x->mix, x->sampleRate);
 
     phase_shaper_meta_setFilterCount(x, x->nFilters);
     phase_shaper_meta_updateAllpassInstances(x);
@@ -54,7 +49,7 @@ void phase_shaper_meta_setFilterCount(phase_shaper_meta *x, float nFilters){
         }
 
         // push new allpass
-        current_allpass->next = biquad_allpass_new(x->f0, x->Q, x->mix);
+        current_allpass->next = biquad_allpass_new(x->f0, x->Q, x->mix, x->sampleRate);
 
         x->nFilters = x->nFilters + 1;
     }

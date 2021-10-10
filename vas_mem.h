@@ -6,11 +6,9 @@
  * Tools for calculating convolution based virtual acoustics (mainly dynamic binaural synthesis) <br>
  * <br>
  * @brief Utilties for dynamic memory allocation <br>
- * <br>
- * Wrapper for memory allocation
- * Max/MSP SDK suggests using the Max/MSP "sysmem_" - routines
- * instead of malloc/calloc/free
- * So for Max/MSP define the Preprocessor macro "MAXMSPSDK"
+ * @details Wrapper for memory allocation <br>
+ * Max/MSP SDK suggests using the Max/MSP "sysmem_" - routines instead of malloc/calloc/free. <br>
+ * So for Max/MSP define the Preprocessor macro "MAXMSPSDK". <br>
  */
 
 #ifndef vas_memory_h

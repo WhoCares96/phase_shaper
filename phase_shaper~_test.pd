@@ -1,14 +1,14 @@
-#N canvas 555 304 873 829 12;
+#N canvas 374 418 988 848 12;
 #X obj 465 600 dac~;
 #X floatatom 587 258 8 0 0 0 - - -;
 #X obj 796 68 vsl 15 128 20 20000 1 0 empty empty empty 0 -9 0 10 -4032
--1 -1 2094 1;
+-1 -1 3294 1;
 #X msg 587 285 freq \$1;
 #X obj 41 194 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
 #X obj 206 205 t b b;
 #X msg 210 238 1;
-#X msg 103 190 0, f 4;
+#X msg 120 202 0, f 4;
 #X obj 242 264 readsf~;
 #X msg 242 238 open audiofiles/Electro_Kick20.wav;
 #X msg 358 766 print;
@@ -20,11 +20,11 @@
 #X msg 64 714 open -bytes 4 audiofiles/result.wav;
 #X obj 68 688 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
-#X obj 419 402 phase_shaper~;
+#X obj 429 424 phase_shaper~;
 #X floatatom 621 59 5 1 30 0 - - -;
 #X floatatom 585 364 6 0 0 0 - - -;
 #X obj 796 236 vsl 15 128 0.025 40 1 0 empty empty empty 0 -9 0 10
--4032 -1 -1 5100 1;
+-4032 -1 -1 6350 1;
 #X msg 617 95 filtercount \$1;
 #X obj 208 168 metro 1000;
 #X msg 756 180 120;
@@ -49,26 +49,33 @@
 #X msg 756 470 0.5;
 #X floatatom 589 584 6 0 0 0 - - -;
 #X obj 795 558 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -4032
--1 -1 5350 1;
+-1 -1 12700 1;
 #X msg 749 621 0.5;
 #X obj 505 544 *~;
 #X obj 539 546 *~;
 #X text 704 387 Dry-Wet Mix;
 #X text 754 535 Gain;
 #X msg 591 461 mix \$1;
+#X obj 274 95 t b b;
+#X msg 278 128 1;
+#X obj 336 168 readsf~;
+#X msg 310 128 open audiofiles/cicerospeech.wav;
+#X obj 276 58 metro 2000;
 #X connect 1 0 3 0;
 #X connect 2 0 1 0;
 #X connect 3 0 18 0;
 #X connect 4 0 23 0;
 #X connect 4 0 11 0;
+#X connect 4 0 54 0;
 #X connect 5 0 6 0;
 #X connect 5 1 9 0;
 #X connect 6 0 8 0;
 #X connect 7 0 8 0;
 #X connect 7 0 23 0;
+#X connect 7 0 54 0;
 #X connect 8 0 18 0;
 #X connect 8 0 34 0;
-#X connect 8 0 33 0;
+#X connect 8 0 18 1;
 #X connect 9 0 8 0;
 #X connect 10 0 15 0;
 #X connect 11 0 12 0;
@@ -78,10 +85,10 @@
 #X connect 14 0 13 0;
 #X connect 16 0 15 0;
 #X connect 17 0 16 0;
-#X connect 18 0 15 0;
+#X connect 18 0 46 1;
 #X connect 18 0 15 1;
-#X connect 18 0 45 0;
-#X connect 18 0 46 0;
+#X connect 18 1 45 0;
+#X connect 18 1 15 0;
 #X connect 19 0 22 0;
 #X connect 20 0 39 0;
 #X connect 21 0 20 0;
@@ -107,3 +114,9 @@
 #X connect 45 0 0 0;
 #X connect 46 0 0 1;
 #X connect 49 0 18 0;
+#X connect 50 0 51 0;
+#X connect 50 1 53 0;
+#X connect 51 0 52 0;
+#X connect 52 0 33 0;
+#X connect 53 0 52 0;
+#X connect 54 0 50 0;

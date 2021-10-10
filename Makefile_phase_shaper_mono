@@ -1,0 +1,11 @@
+lib.name = phase_shaper_mono
+class.sources = phase_shaper_mono~.c
+phase_shaper_mono~.class.sources = phase_shaper_meta.c
+phase_shaper_mono~.class.sources += biquad_allpass.c
+phase_shaper_mono~.class.sources += vas_mem.c
+
+
+
+PDDIR=C:/Program Files/Pd
+
+include pd-lib-builder/Makefile.pdlibbuilder
