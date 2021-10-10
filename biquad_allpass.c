@@ -5,16 +5,16 @@
 #include "biquad_allpass.h"
 #include "vas_mem.h"
 
-biquad_allpass *biquad_allpass_new(float f0, float Q, float mix){
+biquad_allpass *biquad_allpass_new(float f0, float Q, float mix, float sampleRate){
 
     biquad_allpass *x = (biquad_allpass *) vas_mem_alloc(sizeof(biquad_allpass));
 
-    x->sampleRate = 44100;
     x->lastOut = 0;
     x->lastLastOut = 0;
     x->lastIn = 0;
     x->lastLastIn = 0;
 
+    x->sampleRate = sampleRate;
     x->f0 = f0;
     x->Q = Q;
     x->mix = mix;
@@ -42,10 +42,10 @@ void biquad_allpass_setFrequency(biquad_allpass *x, float f0){
 
 
 void biquad_allpass_setMix(biquad_allpass *x, float mix){
-    //if (mix <= 1 && mix >=0) {
+    if (mix <= 1 && mix >=0) {
         x->mix = mix;
         //biquad_allpass_updateParameters(x);
-    //}
+     }
 }
 
 
