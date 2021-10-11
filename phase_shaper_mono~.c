@@ -1,5 +1,5 @@
 /**
- * @file "phase_shaper~.c"
+ * @file "phase_shaper_mono~.c"
  * @author Arne Kuhle <br>
  * @brief A Pure Data object for filtering an incoming signal with a series of allpass filters.<br>
  *

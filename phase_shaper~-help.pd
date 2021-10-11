@@ -1,0 +1,125 @@
+#N canvas 1035 457 1172 714 12;
+#X obj 483 639 dac~;
+#X floatatom 962 338 8 0 0 0 - - -;
+#X obj 962 206 vsl 15 128 20 20000 1 1 empty empty empty 0 -9 0 10
+-4032 -1 -1 2549 1;
+#X msg 582 243 freq \$1;
+#X obj 68 151 bng 30 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 199 203 t b b;
+#X msg 199 226 1;
+#X msg 115 207 0, f 4;
+#X obj 451 430 phase_shaper~;
+#X floatatom 750 110 5 1 300 0 - - -;
+#X floatatom 961 584 6 0 0 0 - - -;
+#X obj 961 453 vsl 15 128 0.025 40 1 0 empty empty empty 0 -9 0 10
+-4032 -1 -1 0 1;
+#X msg 582 218 filtercount \$1;
+#X msg 986 252 120;
+#X floatatom 693 589 6 0 0 0 - - -;
+#X obj 693 458 vsl 15 128 0.01 1 0 0 empty empty empty 0 -9 0 10 -4032
+-1 -1 0 1;
+#X text 62 127 Start;
+#X text 110 126 Stop;
+#X text 954 422 Q-Factor;
+#X msg 986 493 1;
+#X msg 582 266 q \$1;
+#X msg 712 481 0.5;
+#X floatatom 97 565 6 0 0 0 - - -;
+#X obj 95 434 vsl 15 128 0.01 1 0 1 empty empty empty 0 -9 0 10 -4032
+-1 -1 12700 1;
+#X msg 123 457 0.5;
+#X obj 445 588 *~;
+#X obj 534 590 *~;
+#X text 671 433 Dry-Wet Mix;
+#X msg 582 287 mix \$1;
+#X obj 238 259 readsf~ 2, f 11;
+#X msg 984 204 3000;
+#X msg 987 517 0.0625;
+#X msg 785 82 30;
+#X msg 821 82 150;
+#X msg 750 83 10;
+#X msg 713 456 1;
+#X msg 123 433 1;
+#X msg 985 452 32;
+#X msg 985 277 80;
+#X msg 985 227 500;
+#X text 189 141 PLAYBACK;
+#X obj 114 151 bng 30 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X msg 713 508 0;
+#X msg 124 482 0;
+#X text 711 300 PARAMETERS;
+#X text 101 407 Gain;
+#X text 764 54 Allpass Filter Count;
+#X text 952 176 Frequency;
+#X msg 245 204 open audiofiles/breakbeat_44kHz.wav, f 18;
+#X obj 198 181 metro 5647;
+#X msg 986 472 8;
+#X obj 977 568 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X text 855 80 <--may cause feedback!!, f 12;
+#X text 345 472 Due to memory address workaround \, the output channels
+have to be switched., f 15;
+#X text 476 227 phase_shaper~ accepts four diffferent input parameters
+, f 13;
+#X text 860 220 Controls the center frequency of all Filter instances
+, f 13;
+#X text 873 453 Controls the quality factor of all Filter instances
+, f 11;
+#X text 614 454 Controls the ratio between dry and wet audio signal
+, f 9;
+#X text 284 29 All filter instances have a shared set of parameters
+which can be manipulated., f 20;
+#X text 62 29 phase_shaper~ is a sound design tool. Incoming sound
+is transformed by a variable sized array of parametric allpass filter
+instances in a serial connection., f 29;
+#X text 609 65 Controls the number of active allpass filters. The minimum
+amount of active filters is 1, f 17;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 3 0 8 0;
+#X connect 4 0 49 0;
+#X connect 5 0 6 0;
+#X connect 5 1 48 0;
+#X connect 6 0 29 0;
+#X connect 7 0 29 0;
+#X connect 7 0 49 0;
+#X connect 8 0 26 0;
+#X connect 8 1 25 0;
+#X connect 9 0 12 0;
+#X connect 10 0 20 0;
+#X connect 12 0 8 0;
+#X connect 13 0 2 0;
+#X connect 14 0 28 0;
+#X connect 15 0 14 0;
+#X connect 19 0 11 0;
+#X connect 20 0 8 0;
+#X connect 21 0 15 0;
+#X connect 22 0 26 1;
+#X connect 22 0 25 1;
+#X connect 23 0 22 0;
+#X connect 24 0 23 0;
+#X connect 25 0 0 0;
+#X connect 26 0 0 1;
+#X connect 28 0 8 0;
+#X connect 29 0 8 0;
+#X connect 29 1 8 1;
+#X connect 30 0 2 0;
+#X connect 31 0 11 0;
+#X connect 32 0 9 0;
+#X connect 33 0 9 0;
+#X connect 34 0 9 0;
+#X connect 35 0 15 0;
+#X connect 36 0 23 0;
+#X connect 37 0 11 0;
+#X connect 38 0 2 0;
+#X connect 39 0 2 0;
+#X connect 41 0 7 0;
+#X connect 42 0 15 0;
+#X connect 43 0 23 0;
+#X connect 48 0 29 0;
+#X connect 49 0 5 0;
+#X connect 50 0 11 0;
+#X connect 51 0 11 0;
+#X coords 0 0 0.5 0.5 0 0 0;

@@ -1,4 +1,4 @@
-#N canvas 748 413 1348 621 12;
+#N canvas 1010 583 1348 621 12;
 #X obj 463 465 dac~;
 #X floatatom 852 251 8 0 0 0 - - -;
 #X obj 852 120 vsl 15 128 20 20000 1 1 empty empty empty 0 -9 0 10
@@ -17,12 +17,12 @@
 #X floatatom 647 225 5 1 300 0 - - -;
 #X floatatom 799 477 6 0 0 0 - - -;
 #X obj 799 346 vsl 15 128 0.025 40 1 0 empty empty empty 0 -9 0 10
--4032 -1 -1 7850 1;
+-4032 -1 -1 9930 1;
 #X msg 514 245 filtercount \$1;
 #X msg 876 166 120;
 #X floatatom 648 474 6 0 0 0 - - -;
-#X obj 648 343 vsl 15 128 0.01 1 0 0 empty empty empty 0 -9 0 10 -4032
--1 -1 0 1;
+#X obj 648 343 vsl 15 128 0.01 1 0 1 empty empty empty 0 -9 0 10 -4032
+-1 -1 12700 1;
 #X text 254 115 Start;
 #X text 302 114 Stop;
 #X text 792 315 Q-Factor;
@@ -55,7 +55,7 @@
 #X obj 1060 557 - 5;
 #X obj 1021 558 pow;
 #X obj 1064 474 tgl 20 0 empty empty empty 17 7 0 10 -262144 -1 -1
-1 1;
+0 1;
 #X obj 1178 499 /;
 #X msg 1178 480 1 \$1;
 #X msg 1128 425 1;
@@ -66,7 +66,7 @@
 #X msg 1043 273 4;
 #X obj 1112 296 random 9;
 #X obj 1076 172 tgl 20 0 empty empty empty 17 7 0 10 -262144 -1 -1
-1 1;
+0 1;
 #X obj 1233 235 /;
 #X msg 1233 217 1 \$1;
 #X msg 1145 175 1;
@@ -102,7 +102,7 @@
 #X obj 1111 255 metro 1 170 permin;
 #X obj 1054 519 metro 1 170 permin;
 #X msg 824 365 8;
-#X text 6 25 PRESETS;
+#X text 19 34 PRESETS;
 #X obj 948 558 +;
 #X msg 1000 296 0;
 #X obj 968 296 +;
@@ -118,13 +118,15 @@
 #X text 948 94 Strength;
 #X obj 868 236 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X text 6 53 Space Wars: Frequency: 3000 Q: play around! FilterCount:
-150 Dry-Wet: 1 FrqMod: On FrqMod Divisor: 4 FrqMod Strength: 2 QMod:
-On QMod Divisor: 4 QMod Strength: 0.5, f 19;
-#X text 8 238 Punchy Kick: Frequency: 120 Q: 8 FilterCount: 30 Dry-Wet:
+#X text 18 242 Punchy Kick: Frequency: 120 Q: 8 FilterCount: 30 Dry-Wet:
 1, f 16;
-#X text 7 338 Epic Filler: Frequency: 80 Q: 32 FilterCount: 10 Dry-Wet:
-raise slowly from 0 to 1, f 16;
+#X text 21 351 Epic Filler: Frequency: 80 Q: 32 FilterCount: 10 Dry-Wet:
+raise slowly from 0 to 1, f 15;
+#X text 16 56 Space Wars: Frequency: 3000 Q: play around! FilterCount:
+150 Dry-Wet: 1 FrqMod: On, f 17;
+#X text 16 139 FrqMod Divisor: 4 FrqMod Strength: 2 QMod: On, f 18
+;
+#X text 16 182 QMod Divisor: 4 QMod Strength: 0.5, f 18;
 #X connect 1 0 3 0;
 #X connect 2 0 66 0;
 #X connect 3 0 11 0;
@@ -138,8 +140,8 @@ raise slowly from 0 to 1, f 16;
 #X connect 7 0 88 0;
 #X connect 9 0 8 0;
 #X connect 10 0 9 0;
-#X connect 11 0 28 0;
-#X connect 11 1 29 0;
+#X connect 11 0 29 0;
+#X connect 11 1 28 0;
 #X connect 12 0 15 0;
 #X connect 13 0 23 0;
 #X connect 14 0 94 0;
