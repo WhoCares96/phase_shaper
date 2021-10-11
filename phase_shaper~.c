@@ -50,9 +50,9 @@ t_int *phase_shaper_tilde_perform(t_int *w)
     t_sample  *out_R =      (t_sample *)          (w[5]); //Example Address: `ëm
     int n =                 (int)                 (w[6]);
 
-    // order seems to be important!
-    phase_shaper_meta_process(x->p_meta_R, in_R, out_R, n);
-    phase_shaper_meta_process(x->p_meta_L, in_L, out_L, n);
+    // for some reason this has to be swapped
+    phase_shaper_meta_process(x->p_meta_R, in_R, out_L, n);
+    phase_shaper_meta_process(x->p_meta_L, in_L, out_R, n);
 
     return (w+7);
 }
